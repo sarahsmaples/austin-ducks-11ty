@@ -35,8 +35,8 @@ module.exports = async function() {
       return getFallbackReviews();
     }
 
-    // Transform the API response to a simpler format
-    const reviews = data.reviews.map(review => ({
+    // Transform the API response and filter for 5-star reviews only
+    const allReviews = data.reviews.map(review => ({
       author: review.authorAttribution?.displayName || 'Anonymous',
       authorUrl: review.authorAttribution?.uri || null,
       rating: review.rating || 5,
@@ -46,7 +46,10 @@ module.exports = async function() {
       source: 'Google'
     }));
 
-    console.log(`Fetched ${reviews.length} Google reviews`);
+    // Only include 5-star reviews
+    const reviews = allReviews.filter(review => review.rating === 5);
+
+    console.log(`Fetched ${allReviews.length} Google reviews, ${reviews.length} are 5-star`);
 
     return {
       reviews: reviews,
