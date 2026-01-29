@@ -1,0 +1,48 @@
+<!-- js-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+  //- // Cashing SVG Sprite in localStorage
+  $(document).ready(function(){;(function(window,document)
+  {'use strict';
+  	// Change revision of svg icons every time you add new icons
+  	var file='{{ baseUrl }}/assets/images/icons/svg-holder.html',
+  		revision=1;
+  if(!document.createElementNS||!document.createElementNS('http://www.w3.org/2000/svg','svg').createSVGRect){return true;}
+  var isLocalStorage='localStorage'in window&&window['localStorage']!==null,request,data,insertIT=function()
+  {document.body.insertAdjacentHTML('afterbegin',data);},insert=function()
+  {if(document.body){insertIT();}
+  else{document.addEventListener('DOMContentLoaded',insertIT);}};if(isLocalStorage&&localStorage.getItem('inlineSVGrev')===revision)
+  {data=localStorage.getItem('inlineSVGdata');if(data)
+  {insert();return true;}}
+  try
+  {request=new XMLHttpRequest();request.open('GET',file,true);request.onload=function()
+  {if(request.status>=200&&request.status<400)
+  {data=request.responseText;insert();if(isLocalStorage)
+  {localStorage.setItem('inlineSVGdata',data);localStorage.setItem('inlineSVGrev',revision);}}};request.send();}
+  catch(e){}}(window,document));});
+</script>
+
+<script type="text/javascript" src="{{ baseUrl }}/assets/js/script.min.js"></script>
+
+<!--hamburger-->
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#nav-icon3').click(function(){
+      $(this).toggleClass('open');
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    //select the POPUP FRAME and show it
+    $("#popup").hide().fadeIn(1000);
+
+    //close the POPUP if the button with id="boxclose" is clicked
+    $("#boxclose").on("click", function (e) {
+      e.preventDefault();
+      $("#popup").fadeOut(1000);
+    });
+  });
+</script>
