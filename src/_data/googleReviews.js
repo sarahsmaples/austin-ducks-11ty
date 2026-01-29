@@ -1,15 +1,45 @@
 // Fetches Google Reviews at build time using Places API
-// Reviews are cached for the entire build - they only update when you rebuild the site
+// Reviews are cached to a JSON file - only fetches fresh reviews when REFRESH_REVIEWS=true
+
+const fs = require('fs');
+const path = require('path');
+
+const CACHE_FILE = path.join(__dirname, 'cachedReviews.json');
 
 module.exports = async function() {
   const PLACE_ID = 'ChIJRSBCeKe1RIYRpUXX3Z5EU18';
   const API_KEY = process.env.GOOGLE_PLACES_API_KEY;
+  const REFRESH_REVIEWS = process.env.REFRESH_REVIEWS === 'true';
+
+  // Check if we have cached reviews and aren't forcing a refresh
+  if (!REFRESH_REVIEWS && fs.existsSync(CACHE_FILE)) {
+    try {
+      const cached = JSON.parse(fs.readFileSync(CACHE_FILE, 'utf8'));
+      console.log(`Using cached Google reviews from ${cached.fetchedAt || 'unknown date'}`);
+      return cached;
+    } catch (e) {
+      console.log('Could not read cache file, will fetch fresh reviews');
+    }
+  }
 
   // If no API key, return fallback reviews (for local development)
   if (!API_KEY) {
     console.log('No GOOGLE_PLACES_API_KEY found, using fallback reviews');
     return getFallbackReviews();
   }
+
+  // If we have cache but no refresh flag, use cache even with API key available
+  if (!REFRESH_REVIEWS && fs.existsSync(CACHE_FILE)) {
+    try {
+      const cached = JSON.parse(fs.readFileSync(CACHE_FILE, 'utf8'));
+      console.log(`Using cached reviews (set REFRESH_REVIEWS=true to fetch fresh)`);
+      return cached;
+    } catch (e) {
+      // Fall through to fetch
+    }
+  }
+
+  console.log('Fetching fresh Google reviews...');
 
   try {
     // Using Places API (New) - fetches place details including reviews
@@ -51,12 +81,22 @@ module.exports = async function() {
 
     console.log(`Fetched ${allReviews.length} Google reviews, ${reviews.length} are 5-star`);
 
-    return {
+    const result = {
       reviews: reviews,
       overallRating: data.rating || 5,
       totalReviews: data.userRatingCount || 0,
       fetchedAt: new Date().toISOString()
     };
+
+    // Save to cache file
+    try {
+      fs.writeFileSync(CACHE_FILE, JSON.stringify(result, null, 2));
+      console.log('Reviews cached to cachedReviews.json');
+    } catch (e) {
+      console.log('Could not save cache file:', e.message);
+    }
+
+    return result;
 
   } catch (error) {
     console.error('Error fetching Google reviews:', error.message);

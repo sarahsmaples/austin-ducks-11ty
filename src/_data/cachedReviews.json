@@ -1,0 +1,52 @@
+{
+  "reviews": [
+    {
+      "author": "Patricio Daniel Alvarez",
+      "authorUrl": "https://www.google.com/maps/contrib/106117648825852393769/reviews",
+      "rating": 5,
+      "text": "We had excellent end-of-October weather for our tour. We left exactly on time and thoroughly enjoyed the commentary from our tour guide Donald. He is very knowledgeable and he knows how to include some entertaining jokes.",
+      "relativeTime": "2 months ago",
+      "publishTime": "2025-11-02T15:15:05.268438701Z",
+      "source": "Google"
+    },
+    {
+      "author": "Kelly Bailey",
+      "authorUrl": "https://www.google.com/maps/contrib/111050002119051796037/reviews",
+      "rating": 5,
+      "text": "We had a local staycation and had a great time at Odd Duck and Austin Duck Adventures. I’ve been wanting to do the tour for years and finally made it happen. It did not disappoint. Thanks Captain Bob! Learned lots of random facts about Austin.",
+      "relativeTime": "4 weeks ago",
+      "publishTime": "2026-01-01T21:40:12.021078202Z",
+      "source": "Google"
+    },
+    {
+      "author": "Michael Kenyon",
+      "authorUrl": "https://www.google.com/maps/contrib/116380463063194940917/reviews",
+      "rating": 5,
+      "text": "We were part of a birthday party that started the day with the Duck Tour as we all acted like tourist in our own city. Great tour and great couple.of guys that drove the truck/boat and entertained us all.",
+      "relativeTime": "2 months ago",
+      "publishTime": "2025-11-24T03:09:33.828162571Z",
+      "source": "Google"
+    },
+    {
+      "author": "Amy Elwin",
+      "authorUrl": "https://www.google.com/maps/contrib/105360929108872959280/reviews",
+      "rating": 5,
+      "text": "Capt Bob was an amazing tour guide for our company team building! Funny, engaging and overall just a delight! We have many from Austin area but also from outside of Austin. We got to see downtown Austin and Lake Austin all while quacking at people on the street. Enjoyed this tour for our 30 group of people! Highly recommend and would even do again!",
+      "relativeTime": "2 weeks ago",
+      "publishTime": "2026-01-13T21:38:04.703340793Z",
+      "source": "Google"
+    },
+    {
+      "author": "Carol Kozel",
+      "authorUrl": "https://www.google.com/maps/contrib/116409295506500367844/reviews",
+      "rating": 5,
+      "text": "The tour narrator was interesting and informative about downtown Austin.\nWe loved the bus going into the water and given information about different houses thst celebrities lived in. Very enjoyable time.",
+      "relativeTime": "7 months ago",
+      "publishTime": "2025-06-16T01:44:55.749693716Z",
+      "source": "Google"
+    }
+  ],
+  "overallRating": 4.7,
+  "totalReviews": 1292,
+  "fetchedAt": "2026-01-29T23:18:32.288Z"
+}

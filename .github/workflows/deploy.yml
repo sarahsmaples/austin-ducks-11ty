@@ -5,9 +5,9 @@ on:
   push:
     branches: ["main"]
 
-  # Runs monthly on the 1st at midnight UTC to refresh Google Reviews
+  # Runs every 4 months (Jan 1, May 1, Sep 1) at midnight UTC to refresh Google Reviews
   schedule:
-    - cron: "0 0 1 * *"
+    - cron: "0 0 1 1,5,9 *"
 
   # Allows manual trigger from GitHub Actions tab
   workflow_dispatch:
@@ -44,6 +44,8 @@ jobs:
         env:
           ELEVENTY_ENV: production
           GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
+          # Only refresh reviews on scheduled runs, not on every push
+          REFRESH_REVIEWS: ${{ github.event_name == 'schedule' && 'true' || 'false' }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
