@@ -4322,6 +4322,27 @@ img[data-src] {
   z-index: 3;
   padding-bottom: 30%;
 }
+/* Responsive waves positioning */
+@media screen and (max-width: 1340px) {
+  .page-intro-video .waves {
+    bottom: -20%;
+  }
+}
+@media screen and (max-width: 1100px) {
+  .page-intro-video .waves {
+    bottom: -15%;
+  }
+}
+@media screen and (max-width: 767px) {
+  .page-intro-video .waves {
+    bottom: -10%;
+  }
+}
+@media screen and (max-width: 480px) {
+  .page-intro-video .waves {
+    bottom: -5%;
+  }
+}
 @media screen and (max-width: 767px) and (max-height: 769px) {
   .page-intro-video {
     min-height: 600px;
