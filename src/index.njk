@@ -57,7 +57,7 @@ extraScripts: |
   </script>
   <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function() {
-      // Intro video - loops from 0s to 12s
+      // Intro video - loops from 0s to 12s with mobile autoplay support
       const introVideo = document.querySelector('.intro-video-bg');
       if (introVideo) {
         introVideo.addEventListener('timeupdate', function() {
@@ -65,6 +65,19 @@ extraScripts: |
             introVideo.currentTime = 0;
           }
         });
+
+        // Force play on mobile - IntersectionObserver approach
+        const introObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              introVideo.play().catch(() => {});
+            }
+          });
+        }, { threshold: 0.1 });
+        introObserver.observe(introVideo);
+
+        // Also try to play immediately and on any user interaction
+        introVideo.play().catch(() => {});
       }
 
       // Drone videos - loop between 17s and 29s
@@ -83,7 +96,7 @@ extraScripts: |
           }
         });
 
-        // Intersection observer for lazy loading
+        // Intersection observer for lazy loading and mobile autoplay
         const observer = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -101,6 +114,16 @@ extraScripts: |
 
         observer.observe(video);
       });
+
+      // Fallback: try to play all videos on first user touch (for strict iOS)
+      function playAllVideos() {
+        const allVideos = document.querySelectorAll('video');
+        allVideos.forEach(v => v.play().catch(() => {}));
+        document.removeEventListener('touchstart', playAllVideos);
+        document.removeEventListener('click', playAllVideos);
+      }
+      document.addEventListener('touchstart', playAllVideos, { once: true });
+      document.addEventListener('click', playAllVideos, { once: true });
     });
   </script>
 ---
