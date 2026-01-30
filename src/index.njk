@@ -53,6 +53,46 @@ extraScripts: |
       });
     });
   </script>
+  <script type="text/javascript">
+    // Lazy load video - only load and play when in viewport
+    // Loop between 17s and 30s
+    document.addEventListener('DOMContentLoaded', function() {
+      const video = document.querySelector('.video-bg');
+      if (!video) return;
+
+      const START_TIME = 17;
+      const END_TIME = 30;
+
+      // Set start time and handle custom loop
+      video.addEventListener('loadedmetadata', function() {
+        video.currentTime = START_TIME;
+      });
+
+      video.addEventListener('timeupdate', function() {
+        if (video.currentTime >= END_TIME) {
+          video.currentTime = START_TIME;
+        }
+      });
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // Load video source when visible
+            const source = video.querySelector('source');
+            if (source && !video.src) {
+              video.load();
+            }
+            video.currentTime = START_TIME;
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        });
+      }, { threshold: 0.25 });
+
+      observer.observe(video);
+    });
+  </script>
 ---
 
 <section class="page-intro-slider">
@@ -140,7 +180,6 @@ extraScripts: |
       <div class="col-12">
         <div class="section-box section-box--centered">
           <header class="section__header">
-            <small class="section__pretitle">About Us</small>
             <h2 class="section__title">Land and Water Tours</h2>
             <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" height="200" width="200" class="acg-badge" style="background-image: url('{{ baseUrl }}/assets/images/badge_medium.png');background-size: contain; z-index: 9999;">
             </svg>
@@ -149,7 +188,7 @@ extraScripts: |
           <p>
             The original Austin tour, Austin Duck Adventures offers an amphibious tour that includes tours of downtown Austin and beautiful Lake Austin in modern, US coast guard approved, Hydra Terra vehicles. Austin Duck Adventures is Austin's best tour with 75 minutes of sightseeing that includes Historic Sixth Street, the State Capitol Building, the Governor's Mansion, and Lake Austin.
           </p>
-          <img src="{{ baseUrl }}/assets/images/happy_kids.jpg" alt="happy kids with duck whistles" class="image-responsive">
+          <img src="{{ baseUrl }}/assets/images/gallery/g8.jpg" alt="Austin Duck Adventures tour" class="image-responsive">
         </div>
       </div>
     </div>
@@ -160,7 +199,7 @@ extraScripts: |
   <div class="videos-container container">
     <div class="row">
       <header class="section__header">
-        <h2 class="section__title"><small class="section__pretitle">Videos</small>Check out our Videos!</h2>
+        <h2 class="section__title">Check out our Videos!</h2>
       </header>
       <div class="videos-container container">
         <div class="row">
@@ -176,12 +215,16 @@ extraScripts: |
   </div>
 </section>
 
-<section data-parallax="scroll" class="section--parallax2 divider1"></section>
+<section class="section--parallax2 divider1 video-divider">
+  <video class="video-bg" autoplay muted loop playsinline preload="none" loading="lazy" poster="{{ baseUrl }}/assets/images/gallery/g8.jpg">
+    <source src="{{ baseUrl }}/assets/videos/edited-drone-vid.mp4" type="video/mp4">
+  </video>
+</section>
 
 <section id="reviews" class="section text-center video__background">
   <div class="reviews-container container">
     <header class="section__header">
-      <h2 class="section__title"><small class="section__pretitle">Reviews</small>Everybody Loves Duck Tours!</h2>
+      <h2 class="section__title">Everybody Loves Duck Tours!</h2>
     </header>
 
     <div class="car-item">
@@ -189,16 +232,7 @@ extraScripts: |
       <div>
         <div class="car-item__div">
           <div class="card__text-bg">
-            <div id="wrapper">
-              <img src="{{ baseUrl }}/assets/images/acg_logo.png" alt="Austin City Guide" class="card__logo">
-            </div>
-            <div id="wrapper">
-              <div class="star1"></div>
-              <div class="star1"></div>
-              <div class="star1"></div>
-              <div class="star1"></div>
-              <div class="star1"></div>
-            </div>
+            <img src="{{ baseUrl }}/assets/images/5-stars.png" alt="5 stars" class="review-stars">
             <p class="card__details--text" style="font-size: .9rem;">
               "Austin Duck Adventures is one of the longest running tours in Austin for a reason. The tour shows you some cool parts of Austin with a spin around Lake Austin that is known for making a splash with the entire family. It's great to get out of downtown and see the surrounding areas. Due to its high popularity and reasonable pricing, it stays in our <a href="https://www.austincityguide.com/things-to-do" target="_blank">Top 5 Things to Do in Austin</a>."
               <br><br>
@@ -215,17 +249,7 @@ extraScripts: |
       <div>
         <div class="car-item__div">
           <div class="card__text-bg">
-            <div id="wrapper">
-              <img src="{{ baseUrl }}/assets/images/google_logo.png" alt="Google" class="card__logo">
-            </div>
-            <div id="wrapper">
-              {% for i in range(0, review.rating) %}
-              <div class="star1"></div>
-              {% endfor %}
-              {% for i in range(review.rating, 5) %}
-              <div class="star1 star1--empty"></div>
-              {% endfor %}
-            </div>
+            <img src="{{ baseUrl }}/assets/images/5-stars.png" alt="5 stars" class="review-stars">
             <p class="card__details--text">
               "{{ review.text | truncate(300) }}"
               <br><br>
@@ -246,16 +270,7 @@ extraScripts: |
       <div>
         <div class="car-item__div">
           <div class="card__text-bg">
-            <div id="wrapper">
-              <img src="{{ baseUrl }}/assets/images/tripadvisor_logo.png" alt="TripAdvisor" class="card__logo">
-            </div>
-            <div id="wrapper">
-              <div class="star1"></div>
-              <div class="star1"></div>
-              <div class="star1"></div>
-              <div class="star1"></div>
-              <div class="star1"></div>
-            </div>
+            <img src="{{ baseUrl }}/assets/images/5-stars.png" alt="5 stars" class="review-stars">
             <p class="card__details--text">
               "After visiting Austin a few times over the last year, we finally had a chance to take the Duck Tour. We had fun, enjoyed the views, and learned a bit about Austin along the way. This tour definitely helps keep Austin weird."
               <br><br>
@@ -271,16 +286,7 @@ extraScripts: |
       <div>
         <div class="car-item__div">
           <div class="card__text-bg">
-            <div id="wrapper">
-              <img src="{{ baseUrl }}/assets/images/yelp_logo.png" alt="Yelp" class="card__logo">
-            </div>
-            <div id="wrapper">
-              <div class="star1"></div>
-              <div class="star1"></div>
-              <div class="star1"></div>
-              <div class="star1"></div>
-              <div class="star1"></div>
-            </div>
+            <img src="{{ baseUrl }}/assets/images/5-stars.png" alt="5 stars" class="review-stars">
             <p class="card__details--text">
               "Super cool and fun way to tour the city of Austin on land and water. Our tour guide was very entertaining, friendly, and knowledgeable of the city. He provides each person with little quackers to offer up quacks to those we pass along the way."
               <br><br>
@@ -301,7 +307,7 @@ extraScripts: |
       <div class="col-12 col-desktop-10 col-hd--modified">
         <div class="section-box">
           <header class="section__header">
-            <h2 class="section__title"><small class="section__pretitle">Contact Us</small>Parking, Departure, & Contact</h2>
+            <h2 class="section__title">Parking, Departure, & Contact</h2>
           </header>
           <p class="lead about__text">
             Our tours start at 103 E 5th Street, outside the <strong>NEW</strong> Austin Visitors Center location located on 5th Street between Brazos and Congress in downtown Austin. There is paid street parking available in downtown Austin.  The Frost tower building is available which has entrances at  112 E. 4th Street and 406 Brazos Street.  We highly suggest ridesharing in Austin.
