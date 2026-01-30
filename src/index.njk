@@ -4,6 +4,7 @@ title: Austin Duck Adventures
 description: Austin Duck Tours | We feature land and lake Austin tours to view area sightseeing with a splash in Lake Austin. One of Austin's top tours!
 bodyClass: homepage
 extraScripts: |
+  {# SLIDESHOW JS - Commented out, uncomment if restoring slideshow intro
   <script type="text/javascript">
     $(document).ready(function() {
       //- Page intro carousel
@@ -16,6 +17,7 @@ extraScripts: |
       });
     });
   </script>
+  #}
   <script type="text/javascript">
     $(document).ready(function(){
       $('.car-item').slick({
@@ -54,47 +56,71 @@ extraScripts: |
     });
   </script>
   <script type="text/javascript">
-    // Lazy load video - only load and play when in viewport
-    // Loop between 17s and 30s
     document.addEventListener('DOMContentLoaded', function() {
-      const video = document.querySelector('.video-bg');
-      if (!video) return;
-
-      const START_TIME = 17;
-      const END_TIME = 30;
-
-      // Set start time and handle custom loop
-      video.addEventListener('loadedmetadata', function() {
-        video.currentTime = START_TIME;
-      });
-
-      video.addEventListener('timeupdate', function() {
-        if (video.currentTime >= END_TIME) {
-          video.currentTime = START_TIME;
-        }
-      });
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            // Load video source when visible
-            const source = video.querySelector('source');
-            if (source && !video.src) {
-              video.load();
-            }
-            video.currentTime = START_TIME;
-            video.play().catch(() => {});
-          } else {
-            video.pause();
+      // Intro video - loops from 0s to 12s
+      const introVideo = document.querySelector('.intro-video-bg');
+      if (introVideo) {
+        introVideo.addEventListener('timeupdate', function() {
+          if (introVideo.currentTime >= 12) {
+            introVideo.currentTime = 0;
           }
         });
-      }, { threshold: 0.25 });
+      }
 
-      observer.observe(video);
+      // Drone videos - loop between 17s and 29s
+      const droneVideos = document.querySelectorAll('.video-bg, .info-card__video');
+      droneVideos.forEach(function(video) {
+        const START_TIME = 17;
+        const END_TIME = 29;
+
+        video.addEventListener('loadedmetadata', function() {
+          video.currentTime = START_TIME;
+        });
+
+        video.addEventListener('timeupdate', function() {
+          if (video.currentTime >= END_TIME) {
+            video.currentTime = START_TIME;
+          }
+        });
+
+        // Intersection observer for lazy loading
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const source = video.querySelector('source');
+              if (source && !video.src) {
+                video.load();
+              }
+              video.currentTime = START_TIME;
+              video.play().catch(() => {});
+            } else {
+              video.pause();
+            }
+          });
+        }, { threshold: 0.25 });
+
+        observer.observe(video);
+      });
     });
   </script>
 ---
 
+{# VIDEO INTRO - Currently Active #}
+<section class="page-intro-video">
+  <video class="intro-video-bg" autoplay muted loop playsinline preload="auto" poster="{{ baseUrl }}/assets/images/gallery/g8.jpg">
+    <source src="{{ baseUrl }}/assets/videos/intro-no-sound.mov" type="video/mp4">
+  </video>
+  <header class="page-intro__header">
+    <div class="container">
+      <h1 class="page-intro__title">Austin Duck Adventures</h1>
+      <p class="page-intro__text">It's The Best Way To tour Austin, Texas!</p>
+    </div>
+  </header>
+  <div class="waves"></div>
+</section>
+
+{# SLIDESHOW INTRO - Commented out, uncomment to restore #}
+{#
 <section class="page-intro-slider">
   <div class="js-page-intro-slider">
     <div class="page-intro-slide page-intro-slide--01">
@@ -124,6 +150,7 @@ extraScripts: |
   </div>
   <div class="waves"></div>
 </section>
+#}
 
 <section class="section info-cards">
   <div class="container">
@@ -145,7 +172,9 @@ extraScripts: |
       <div class="col-12 col-tablet-6 col-desktop-4">
         <div class="info-card info-card--mint">
           <a href="#contact">
-            <img src="{{ baseUrl }}/assets/images/departures.jpg" alt="Austin Duck Departure" class="info-card__image">
+            <video class="info-card__video" autoplay muted loop playsinline preload="metadata" poster="{{ baseUrl }}/assets/images/gallery/g8.jpg">
+              <source src="{{ baseUrl }}/assets/videos/edited-drone-vid.mp4" type="video/mp4">
+            </video>
           </a>
           <div class="info-card__content">
             <h3 class="info-card__title">Departure</h3>
