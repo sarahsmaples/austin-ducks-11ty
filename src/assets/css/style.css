@@ -2584,49 +2584,95 @@ a.boxclose{
    Gallery content styling
    =========================================== */
 .gallery__background {
-      background-image: linear-gradient(to bottom right, #1a97f0, #97e3e6, #fff);
+  background: linear-gradient(135deg, #67cef2 0%, #97e3e6 50%, #fff 100%);
+  padding-bottom: 60px;
 }
 .gallery {
-  zoom: 1;
+  column-count: 2;
+  column-gap: 15px;
   margin-top: 30px;
-  padding: 0 7px;
+  padding: 0 15px;
   max-width: 1920px;
   margin-left: auto;
   margin-right: auto;
 }
-.gallery:before,
-.gallery:after {
-  content: "";
-  display: table;
-}
-.gallery:after {
-  clear: both;
-}
 @media screen and (min-width: 767px) {
   .gallery {
+    column-count: 3;
+    column-gap: 20px;
     margin-top: 60px;
   }
 }
+@media screen and (min-width: 1200px) {
+  .gallery {
+    column-count: 4;
+  }
+}
+@media screen and (min-width: 1600px) {
+  .gallery {
+    column-count: 5;
+  }
+}
 .gallery__figure {
-  float: left;
-  width: 50%;
-  margin: 0;
+  margin: 0 0 15px 0;
+  box-sizing: border-box;
+  break-inside: avoid;
+  display: inline-block;
+  width: 100%;
 }
-@media screen and (min-width: 989px) {
+@media screen and (min-width: 767px) {
   .gallery__figure {
-    width: 33.333%;
+    margin-bottom: 20px;
   }
 }
-@media screen and (min-width: 1450px) {
-  .gallery__figure {
-    width: 20%;
-  }
+/* Featured images - visual prominence through aspect ratio and border color */
+.gallery__figure--featured {
+  /* Aspect ratio and styling in anchor rule above */
+}
+/* Medium featured images - same size as regular, just different styling */
+.gallery__figure a {
+  display: block;
+  border-radius: 15px;
+  overflow: hidden;
+  border: 3px solid var(--color-deep-blue, #003366);
+  box-shadow: 0 4px 15px rgba(0, 51, 102, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  aspect-ratio: 3 / 2;
+}
+.gallery__figure--featured a {
+  border-width: 4px;
+  border-color: var(--color-coral, #ff6b6b);
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.3);
+  aspect-ratio: 5 / 4;
+}
+.gallery__figure--medium a {
+  border-width: 3px;
+  border-color: var(--color-sunshine, #ffd93d);
+  box-shadow: 0 5px 18px rgba(255, 217, 61, 0.25);
+  aspect-ratio: 4 / 3;
+}
+.gallery__figure a:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 25px rgba(0, 51, 102, 0.35);
+  border-color: var(--color-coral, #ff6b6b);
+}
+.gallery__figure--featured a:hover {
+  box-shadow: 0 12px 35px rgba(255, 107, 107, 0.4);
+  border-color: var(--color-sunshine, #ffd93d);
+}
+.gallery__figure--medium a:hover {
+  box-shadow: 0 10px 30px rgba(255, 217, 61, 0.35);
+  border-color: var(--color-coral, #ff6b6b);
 }
 .gallery__image {
   display: block;
-  max-width: 100%;
-  height: auto;
-  padding: 7px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+.gallery__figure a:hover .gallery__image {
+  transform: scale(1.1);
 }
 .gallery__caption {
   font-size: 0px;
